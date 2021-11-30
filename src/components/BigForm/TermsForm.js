@@ -1,8 +1,7 @@
-import { Box } from "@mui/system";
-import { Grid, Typography } from '@mui/material';
-import Button from '@mui/material/Button';
-import checkBox from "../../utils/checkBox";
-import { CheckBox } from "@mui/icons-material";
+import { Box } from "@material-ui/core";
+import { Grid, Typography } from "@material-ui/core";
+import { Button } from "@material-ui/core";
+
 
 const TermsForm = ()=>{
     return <Box>

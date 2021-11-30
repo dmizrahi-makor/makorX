@@ -1,9 +1,9 @@
 import * as React from 'react';
-import Box from '@mui/material/Box';
-import TextField from '@mui/material/TextField';
-import Autocomplete from '@mui/material/Autocomplete';
+import { Box } from '@material-ui/core';
+import { TextField } from '@material-ui/core';
+import { Autocomplete } from '@material-ui/lab';
 import { countries } from '../utils/countries';
-import { withStyles } from '@mui/styles';
+import { withStyles } from '@material-ui/core';
 
 const CountryAutoComplete = ()=> {
   return (
@@ -13,22 +13,11 @@ const CountryAutoComplete = ()=> {
       options={countries}
       autoHighlight
       getOptionLabel={(option) => option.label}
-      renderOption={(props, option) => (
-        <Box component="li" sx={{ '& > img': { mr: 2, flexShrink: 0 } }} {...props}>
-          <img
-            loading="lazy"
-            width="20"
-            src={`https://flagcdn.com/w20/${option.code.toLowerCase()}.png`}
-            srcSet={`https://flagcdn.com/w40/${option.code.toLowerCase()}.png 2x`}
-            alt=""
-          />
-          {option.label} ({option.code}) +{option.phone}
-        </Box>
-      )}
       renderInput={(params) => (
-        <TextField
+        <StyledTextFieldCountry
           {...params}
           label="Choose a country"
+          InputLabelProps={{style : {color:"white"}}}
           inputProps={{
             ...params.inputProps,
             autoComplete: 'new-password', // disable autocomplete and autofill
@@ -47,8 +36,19 @@ export const StyledAutoComplete = withStyles((theme)=>({
         color:"#6d6d6d",
         marginTop:"20px",
     },
+    inputRoot:{
+      color:"white"
+    },
     paper:{
         backgroundColor:"#001333",
         color:"white"
+    },
+    popper:{
+      color:"white"
     }
     }))(Autocomplete)
+    export const StyledTextFieldCountry = withStyles((theme)=>({
+      root:{
+        color:"white"
+      }
+      }))(TextField)

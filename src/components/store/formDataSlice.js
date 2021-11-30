@@ -37,19 +37,25 @@ export const formDataSlice = createSlice({
         f_ownership:"" ,
         f_compliance:"",
         f_statment:"",
-        f_proof:"",             
+        f_proof:"",        
+        
+       
     }
     ,reducers:{
         updateState:(state, action) => {
              state[action.payload.id] = action.payload.value;
         },
         fileUpload(state,action){
-            state[action.payload.id]=action.payload.value
+            state[action.payload.id]=action.payload.value;
+        },
+        uploadFields(state,action){
+            state= action.payload;
+            console.log("redux state " ,state)
         }
     }
 })
 
-export default formDataSlice;
+export default {formDataSlice};
 export const formDataActions = formDataSlice.actions; 
 
 

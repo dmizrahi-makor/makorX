@@ -1,19 +1,19 @@
-import * as React from 'react';
-import Box from '@mui/material/Box';
-import Stepper from '@mui/material/Stepper';
-import Step from '@mui/material/Step';
-import StepButton from '@mui/material/StepButton';
-import Button from '@mui/material/Button';
-import Typography from '@mui/material/Typography';
+import React , {useEffect} from 'react';
+import { Box } from '@material-ui/core';
+import { Stepper} from '@material-ui/core';
+import { Step } from '@material-ui/core';
+import { StepButton } from '@material-ui/core';
+import { Button } from '@material-ui/core';
+import { Typography } from '@material-ui/core';
 import PseudoForm from './PseudoForm';
-import UploaderField from './UploaderField';
 import FileForm from './FileForm';
 import TermsForm from './TermsForm';
 import ProgressBar from "./ProgressBar";
 import { useSelector } from 'react-redux';
-import {findNonEmptyValues} from "../../utils/tools"
 import axios from 'axios';
-import { isNotEmptyValue } from '../../utils/tools';
+import { useStyles } from '../../styles/UiForm';
+import { formDataActions } from '../store/formDataSlice'
+import { useDispatch } from 'react-redux';
 const steps = ['Select campaign settings', 'Create an ad group', 'Create an ad'];
 
 const StepperFormComplex = () => {
@@ -22,16 +22,32 @@ const StepperFormComplex = () => {
   const totalNumOfFields = React.useRef(Object.keys(formState).length);
   const [barValue, setBarValue] = React.useState(0);
   const [nonEmptyFields, setNonEmptyFields] = React.useState(0);
-  React.useEffect(() => {
-    setNonEmptyFields(findNonEmptyValues(formState));
-    setBarValue(Math.round(nonEmptyFields * 100/totalNumOfFields.current));
-    // console.log('fromstate updated', numOfNonEmptyFields, totalNumOfFields)
+  const dispatch = useDispatch();
+  const classes = useStyles();
+  
+  useEffect(() =>{
+    console.log("inside Use effect")
+    axios.all([axios.get('http://10.0.0.197:3030/api/onboarding/289334a4-50f3-11ec-be49-d08e7912923c'),
+    axios.get('http://10.0.0.197:3030/api/file/289334a4-50f3-11ec-be49-d08e7912923c')])    
+    .then(axios.spread(function(res1,res2){
+      const textFields = res1.data[0];
+      const fileFields = {};
+      res2.data.forEach(file => {
+        fileFields[file.field_name] = file.file_name;
+      });
+     const fullData = {...textFields, ...fileFields};
+     dispatch(formDataActions.uploadFields(fullData))
+     console.log('formState', fullData);
+    })).catch(err => console.log(err))
     
-  }, [formState]);
+    
+  }, []);
 //   const fields = {
 //     asd:'asdsad',
 
-   
+    React.useEffect(() => {
+    console.log('dispatcher render')
+  })
     
 //   }
 // const doneFields = React.useState(0);
@@ -90,13 +106,13 @@ const StepperFormComplex = () => {
   };
 
   return (
-    <Box>
+    <Box className={classes.container}>
           <ProgressBar value={barValue} />
         <Box sx={{ width: '100%' }}>
-        <Stepper nonLinear activeStep={activeStep}>
+        <Stepper className ={classes.stepper} nonLinear activeStep={activeStep}>
             {steps.map((label, index) => (
             <Step key={label} completed={completed[index]}>
-                <StepButton color="inherit" onClick={handleStep(index)}>
+                <StepButton sx={{color:"white"}} color="inherit" onClick={handleStep(index)}>
                 {label}
                 </StepButton>
             </Step>
@@ -116,7 +132,7 @@ const StepperFormComplex = () => {
             ) : (
             <React.Fragment>
                 <Typography sx={{ mt: 2, mb: 1 }}>{
-                  activeStep === 0? <PseudoForm/>: (activeStep === 1?<FileForm />:<p><TermsForm/></p>)
+                  activeStep === 0? <PseudoForm value = {formState}/>: (activeStep === 1?<FileForm />:<p><TermsForm/></p>)
                   }</Typography>
                 <Box sx={{ display: 'flex', flexDirection: 'row', pt: 2 }}>
                 <Button
@@ -155,3 +171,4 @@ const StepperFormComplex = () => {
 }
 
 export default StepperFormComplex;
+

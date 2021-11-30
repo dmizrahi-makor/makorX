@@ -42,7 +42,7 @@ const handleSubmit = (e) => {
   };
 
   console.log(data)
-  axios.post('http://10.0.0.193/3030/api/contact', data)
+  axios.post('http://10.0.0.197/3030/api/onboarding', data)
   .then(res => {
     console.log(res)
   })
