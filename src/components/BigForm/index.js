@@ -5,6 +5,7 @@ import { styled } from '@mui/material/styles';
 import Paper from '@mui/material/Paper';
 import Button from '@mui/material/Button';
 import { useState } from 'react';
+import axios from 'axios';
 
 // const reducerTypes = {
 //   PURPOSE: 'PURPOSE',
@@ -30,23 +31,24 @@ const [msg, setMsg] = useState();
 
 
 const handleSubmit = (e) => {
-e.preventDefault();
-console.log(purpose)
-console.log({purpose,
-  fname,
-  lname,
-  organiztion,
-  email,
-  msg})
-  // axios.post('http://localhost:port/api/contact', {
-  //   data: JSON.Stringify(data)
-  // })
-  // .then(res => {
-  //   console.log(res)
-  // })
-  // .catch(err => {
-  //   console.log(err)
-  // });
+  e.preventDefault();
+  
+  const data = {purpose,
+    fname,
+    lname,
+    organiztion,
+    email,
+    msg
+  };
+
+  console.log(data)
+  axios.post('http://10.0.0.193/3030/api/contact', data)
+  .then(res => {
+    console.log(res)
+  })
+  .catch(err => {
+    console.log(err)
+  });
 }
 
 
