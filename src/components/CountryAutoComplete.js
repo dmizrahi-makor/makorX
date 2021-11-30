@@ -1,11 +1,11 @@
-import * as React from 'react';
-import Box from '@mui/material/Box';
-import TextField from '@mui/material/TextField';
-import Autocomplete from '@mui/material/Autocomplete';
-import { countries } from '../utils/countries';
-import { withStyles } from '@mui/styles';
+import * as React from "react";
+import Box from "@mui/material/Box";
+import TextField from "@mui/material/TextField";
+import Autocomplete from "@mui/material/Autocomplete";
+import { countries } from "../utils/countries";
+import { withStyles } from "@mui/styles";
 
-const CountryAutoComplete = ()=> {
+const CountryAutoComplete = () => {
   return (
     <StyledAutoComplete
       id="country-select-demo"
@@ -14,7 +14,11 @@ const CountryAutoComplete = ()=> {
       autoHighlight
       getOptionLabel={(option) => option.label}
       renderOption={(props, option) => (
-        <Box component="li" sx={{ '& > img': { mr: 2, flexShrink: 0 } }} {...props}>
+        <Box
+          component="li"
+          sx={{ "& > img": { mr: 2, flexShrink: 0 } }}
+          {...props}
+        >
           <img
             loading="lazy"
             width="20"
@@ -31,24 +35,23 @@ const CountryAutoComplete = ()=> {
           label="Choose a country"
           inputProps={{
             ...params.inputProps,
-            autoComplete: 'new-password', // disable autocomplete and autofill
+            autoComplete: "new-password", // disable autocomplete and autofill
           }}
         />
       )}
     />
   );
-}
+};
 export default CountryAutoComplete;
 
-export const StyledAutoComplete = withStyles((theme)=>({
-    root:{
-      
-        border:"solid #5f3c2b",
-        color:"#6d6d6d",
-        marginTop:"20px",
-    },
-    paper:{
-        backgroundColor:"#001333",
-        color:"white"
-    }
-    }))(Autocomplete)
+export const StyledAutoComplete = withStyles((theme) => ({
+  root: {
+    border: "solid #5f3c2b",
+    color: "#6d6d6d",
+    marginTop: "20px",
+  },
+  paper: {
+    backgroundColor: "#001333",
+    color: "white",
+  },
+}))(Autocomplete);
