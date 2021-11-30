@@ -33,7 +33,10 @@ const DispatcherField =  (props) => {
     };
 
   return (
-    <StyledHeaderTableCell fullWidth onChange={handleChange} label = {!props.value? props.label: ''}  value={props.value}/>
+    <StyledHeaderTableCell 
+    InputLabelProps={{
+      style: { color: 'white' },
+    }}  fullWidth onChange={handleChange} label = {!props.value? props.label: ''}  value={props.value}/>
   );
 }
 

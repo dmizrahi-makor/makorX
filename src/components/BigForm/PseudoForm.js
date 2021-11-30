@@ -11,6 +11,7 @@ import { formData } from '../../utils/formData';
 import { useSelector } from 'react-redux';
 import { TextField } from '@mui/material';
 import { withStyles } from '@mui/styles';
+import CountryAutoComplete from '../CountryAutoComplete';
 
 
 
@@ -25,6 +26,9 @@ const PseudoForm = ({ step }) => {
         {formData.form1.grid1.map(({ label, id }) =>
           <Grid item xs={6}><DispatcherField value={formState[id]} id={id} label={label} /></Grid>
         )}
+        <Grid item xs={6}>
+        <CountryAutoComplete/>
+        </Grid>
         </Grid>
       </Grid>
       <Grid item >
@@ -37,7 +41,7 @@ const PseudoForm = ({ step }) => {
             <Grid container>
                {formData.form1.grid3.map(({label, id})=>
                 <Grid item xs={6}>
-                    <DispatcherField value={formState[id]}  multiline maxRows={9} rows = {9}  id={id}  label={label} />
+                    <DispatcherField  value={formState[id]}  multiline maxRows={9} rows = {9}  id={id}  label={label} />
                 </Grid>)}
             </Grid>
         </Grid> 
@@ -50,7 +54,8 @@ export default PseudoForm;
 
 export const StyledHeaderTableCell = withStyles((theme)=>({
     root:{
-        border:"1px solid #5f3c2b",
+      
+        border:"solid #5f3c2b",
         color:"#6d6d6d",
         marginTop:"20px",
     }

@@ -21,10 +21,10 @@ const StepperFormComplex = () => {
   const formState = useSelector(state => state.formData);
   const totalNumOfFields = React.useRef(Object.keys(formState).length);
   const [barValue, setBarValue] = React.useState(0);
+  const [nonEmptyFields, setNonEmptyFields] = React.useState(0);
   React.useEffect(() => {
-    console.log(formState);
-    const numOfNonEmptyFields = findNonEmptyValues(formState);
-    setBarValue(Math.round(numOfNonEmptyFields * 100/totalNumOfFields.current));
+    setNonEmptyFields(findNonEmptyValues(formState));
+    setBarValue(Math.round(nonEmptyFields * 100/totalNumOfFields.current));
     // console.log('fromstate updated', numOfNonEmptyFields, totalNumOfFields)
     
   }, [formState]);

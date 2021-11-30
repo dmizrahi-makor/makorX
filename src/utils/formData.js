@@ -4,7 +4,7 @@ export const formData = {
             {id: 'cname', label: 'COMPANY NAME'},
             {id: 'regNumber', label: 'REGISTERED NUMBER'},
             {id: 'oaddress', label: 'REGISTERED OFFICE ADDRESS'},
-            {id: 'country', label: 'COUNTRY'},
+            // {id: 'country', label: 'COUNTRY'},
         ],
         grid2: [
             {id: 'paddress', label: 'PRINCIPAL BUSINESS ADDRESS (IF DIFFERENT)E'},

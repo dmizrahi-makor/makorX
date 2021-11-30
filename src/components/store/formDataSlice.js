@@ -41,11 +41,9 @@ export const formDataSlice = createSlice({
     }
     ,reducers:{
         updateState:(state, action) => {
-            console.log(action.payload.value);
              state[action.payload.id] = action.payload.value;
         },
         fileUpload(state,action){
-            console.log(action.payload.id)
             state[action.payload.id]=action.payload.value
         }
     }
