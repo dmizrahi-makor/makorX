@@ -1,39 +1,70 @@
-import React, { useEffect } from 'react';
-import { Box, makeStyles, createStyles } from '@material-ui/core';
-import { Stepper } from '@material-ui/core';
-import { Step } from '@material-ui/core';
-import { StepButton } from '@material-ui/core';
-import { Button } from '@material-ui/core';
-import { Typography } from '@material-ui/core';
-import PseudoForm from './PseudoForm';
-import FileForm from './FileForm';
-import TermsForm from './TermsForm';
-import ProgressBar from './ProgressBar';
-import { useSelector } from 'react-redux';
-import axios from 'axios';
-import { formDataActions } from '../store/formDataSlice';
-import { useDispatch } from 'react-redux';
+import React, { useEffect } from "react";
+import { Box, makeStyles, createStyles } from "@material-ui/core";
+import { Stepper } from "@material-ui/core";
+import { Step } from "@material-ui/core";
+import { StepButton } from "@material-ui/core";
+import { Button } from "@material-ui/core";
+import { Typography } from "@material-ui/core";
+import PseudoForm from "./PseudoForm";
+import FileForm from "./FileForm";
+import TermsForm from "./TermsForm";
+import ProgressBar from "./ProgressBar";
+import { useSelector } from "react-redux";
+import axios from "axios";
+import { formDataActions } from "../store/formDataSlice";
+import { useDispatch } from "react-redux";
 
-const steps = [
-  'Select campaign settings',
-  'Create an ad group',
-  'Create an ad',
-];
+const steps = ["Submit Documentation", "Attach Documents", "Terms of Use"];
 
 const useStyles = makeStyles((theme) => ({
   root: {
-    '&.MuiSvgIcon-root.MuiStepIcon-root': {
-      width: '5rem',
+    gap: "10%",
+    "& .MuiPaper-root.MuiStepper-root.MuiStepper-horizontal.MuiPaper-elevation0":
+      {},
+    "&.MuiSvgIcon-root.MuiStepIcon-root": {
+      width: "5rem",
     },
-    '& .MuiStepLabel-root.MuiStepLabel-horizontal': {
-      display: 'flex',
-      flexDirection: 'column-reverse',
+    "& .MuiStepLabel-root.MuiStepLabel-horizontal": {
+      display: "flex",
+      flexDirection: "column",
     },
-    '& .MuiStepLabel-iconContainer': {
-      padding: '0',
+    "& .MuiStepLabel-iconContainer": {
+      padding: "0",
     },
-    '& .MuiSvgIcon-root.MuiStepIcon-root': {
-      transform: 'scale(2) translateY(30%)',
+    "& .MuiSvgIcon-root.MuiStepIcon-root": {
+      transform: "scale(2) translateY(23%)",
+    },
+    "&. MuiInputBase-input.MuiOutlinedInput-input": {
+      borderRadius: "0",
+      borderWidth: "3px",
+    },
+    "& .MuiStepConnector-line.MuiStepConnector-lineHorizontal": {
+      borderTopWidth: "2px",
+    },
+  },
+  progressContainer: {
+    display: "flex",
+    alignItems: "center",
+    gap: "30px",
+    "& .MuiLinearProgress-root.MuiLinearProgress-colorPrimary.MuiLinearProgress-determinate":
+      {
+        flex: "1",
+      },
+  },
+  navButton: {
+    // boxSizing: "border-box",
+    padding: ".35rem 1.65rem",
+    borderRadius: "0",
+    backgroundSize: "100% 205%",
+    backgroundOrigin: "padding",
+    backgroundRepeat: "no-repeat",
+    backgroundPosition: "center 100%",
+    backgroundImage: "linear-gradient(to bottom, blue 50%, transparent 50%)",
+    border: "3px blue solid",
+    transition: ".2s",
+    "&:hover": {
+      backgroundPosition: "center 0",
+      color: "white",
     },
   },
 }));
@@ -48,14 +79,14 @@ const StepperFormComplex = () => {
   const classes = useStyles();
 
   useEffect(() => {
-    console.log('inside Use effect');
+    console.log("inside Use effect");
     axios
       .all([
         axios.get(
-          'http://10.0.0.197:3030/api/onboarding/289334a4-50f3-11ec-be49-d08e7912923c'
+          "http://10.0.0.197:3030/api/onboarding/289334a4-50f3-11ec-be49-d08e7912923c"
         ),
         axios.get(
-          'http://10.0.0.197:3030/api/file/289334a4-50f3-11ec-be49-d08e7912923c'
+          "http://10.0.0.197:3030/api/file/289334a4-50f3-11ec-be49-d08e7912923c"
         ),
       ])
       .then(
@@ -67,7 +98,7 @@ const StepperFormComplex = () => {
           });
           const fullData = { ...textFields, ...fileFields };
           dispatch(formDataActions.uploadFields(fullData));
-          console.log('formState', fullData);
+          console.log("formState", fullData);
         })
       )
       .catch((err) => console.log(err));
@@ -130,23 +161,32 @@ const StepperFormComplex = () => {
 
   return (
     <Box className={classes.container}>
-      <ProgressBar value={barValue} />
-      <Box sx={{ width: '100%' }}>
-        <Stepper className={classes.stepper} nonLinear activeStep={activeStep}>
-          {steps.map((label, index) => (
-            <Step key={label} completed={completed[index]}>
+      <Box sx={{ width: "100%" }}>
+        <Stepper className={classes.root} nonLinear activeStep={activeStep}>
+          {steps.map((label, i) => (
+            <Step key={label} completed={completed[i]}>
               <StepButton
-                sx={{ color: 'white', width: '5%' }}
-                className={classes.root}
-                color='inherit'
-                onClick={handleStep(index)}
+                sx={{ color: "white", width: "5%" }}
+                // className={classes.root}
+                color="inherit"
+                onClick={handleStep(i)}
               >
                 {label}
               </StepButton>
             </Step>
           ))}
         </Stepper>
+        <Box className={classes.progressContainer}>
+          <Typography variant="h4" component="p">
+            Progress
+          </Typography>
+          <ProgressBar value={barValue} />
+          <Typography variant="h4" component="p">
+            {barValue}%
+          </Typography>
+        </Box>
         <Box>
+          <Typography variant="h4">On-Boarding Documentation</Typography>
           <React.Fragment>
             <Typography sx={{ mt: 2, mb: 1 }}>
               {activeStep === 0 ? (
@@ -159,21 +199,39 @@ const StepperFormComplex = () => {
                 </p>
               )}
             </Typography>
-            <Box sx={{ display: 'flex', flexDirection: 'row', pt: 2 }}>
-              <Button
-                color='inherit'
-                disabled={activeStep === 0}
-                onClick={handleBack}
-                sx={{ mr: 1 }}
-              >
-                Back
-              </Button>
-              <Box sx={{ flex: '1 1 auto' }} />
+            <Box sx={{ display: "flex", flexDirection: "row", pt: 2 }}>
+              {activeStep !== 0 && (
+                <Button
+                  className={classes.navButton}
+                  color="inherit"
+                  disabled={activeStep === 0}
+                  onClick={handleBack}
+                  sx={{ mr: 1 }}
+                  variant="outlined"
+                >
+                  Back
+                </Button>
+              )}
+              <Box sx={{ flex: "1 1 auto" }} />
               {activeStep !== 2 ? (
-                <Button onClick={handleNext} sx={{ mr: 1 }}>
+                <Button
+                  className={classes.navButton}
+                  onClick={handleNext}
+                  sx={{ mr: 1 }}
+                  variant="outlined"
+                >
                   Next
                 </Button>
-              ) : null}
+              ) : (
+                <Button
+                  className={classes.navButton}
+                  onClick={handleNext}
+                  sx={{ mr: 1 }}
+                  variant="outlined"
+                >
+                  ACCEPT AND SEND
+                </Button>
+              )}
             </Box>
           </React.Fragment>
         </Box>

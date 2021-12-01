@@ -1,31 +1,39 @@
-import React, { memo } from 'react';
-import { Grid } from '@material-ui/core';
-import DispatcherField from './DispatcherField';
-import { formData } from '../../utils/formData';
-import { useSelector } from 'react-redux';
-import { TextField } from '@material-ui/core';
-import { withStyles } from '@material-ui/core';
-import CountryAutoComplete from '../CountryAutoComplete';
-import { useStyles } from '../../styles/UiForm';
+import React, { memo } from "react";
+import { Grid, makeStyles } from "@material-ui/core";
+import DispatcherField from "./DispatcherField";
+import { formData } from "../../utils/formData";
+import { useSelector } from "react-redux";
+import { TextField } from "@material-ui/core";
+import { withStyles } from "@material-ui/core";
+import CountryAutoComplete from "../CountryAutoComplete";
 
 const steps = [
-  'Submit on-boarding documentation',
-  'Attach documents',
-  'Terms of Use',
+  "Submit on-boarding documentation",
+  "Attach documents",
+  "Terms of Use",
 ];
+
+const useStyles = makeStyles({
+  root: {
+    "& .MuiGrid-root.MuiGrid-container": {
+      // gap: "4px",
+    },
+  },
+});
+
 const PseudoForm = memo(function (props) {
   const { steps } = props;
   const formState = useSelector((state) => state.formData);
   const classes = useStyles();
 
   React.useEffect(() => {
-    console.log('formState', formState['cname']);
+    console.log("formState", formState["cname"]);
   }, []);
 
   return (
-    <Grid container direction='column'>
+    <Grid container direction="column" className={classes.root} spacing={3}>
       <Grid item>
-        <Grid container>
+        <Grid container spacing={3}>
           {formData.form1.grid1.map(({ label, id }) => (
             <Grid className={classes.root} item xs={6}>
               <DispatcherField value={formState[id]} id={id} label={label} />
@@ -36,14 +44,18 @@ const PseudoForm = memo(function (props) {
           </Grid>
         </Grid>
       </Grid>
-      <Grid item>
-        {formData.form1.grid2.map(({ label, id }) => (
-          <DispatcherField value={formState[id]} id={id} label={label} />
-        ))}
+      <Grid item spacing={3}>
+        <Grid container spacing={3}>
+          {formData.form1.grid2.map(({ label, id }) => (
+            <Grid className={classes.root} item xs={12}>
+              <DispatcherField value={formState[id]} id={id} label={label} />
+            </Grid>
+          ))}
+        </Grid>
       </Grid>
 
       <Grid item xs={12}>
-        <Grid container>
+        <Grid container spacing={3}>
           {formData.form1.grid3.map(({ label, id }) => (
             <Grid item xs={6}>
               <DispatcherField
@@ -67,8 +79,8 @@ export default PseudoForm;
 export const StyledTextField = withStyles((theme) => ({
   root: {
     // border: "solid #3F3073",
-    color: '#6d6d6d',
-    marginTop: '20px',
-    textAlign: 'center',
+    color: "#6d6d6d",
+    // marginTop: "20px",
+    textAlign: "center",
   },
 }))(TextField);
